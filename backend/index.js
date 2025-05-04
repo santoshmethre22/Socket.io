@@ -24,12 +24,19 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log("Client connected:", socket.id);
 
+  socket.on('join_room', (room) => {
+    socket.join(room);
+    console.log(`${socket.id} joined room: ${room}`);
+  });
+
   socket.on("send_message", (data) => {
-    console.log("Received:", data);
-    io.emit("receive_message", {
-        username: data.username,
-        text: data.text
-      }); // broadcast to all clients
+    console.log(`Message from ${data.username} to room ${data.room}: ${data.text}`);
+    
+    // Send only to users in the same room
+    io.to(data.room).emit("receive_message", {
+      username: data.username,
+      text: data.text
+    });
   });
 
   socket.on('disconnect', () => {
