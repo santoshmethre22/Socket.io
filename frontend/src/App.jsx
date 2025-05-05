@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import dotenv from "dotenv"
-
-
-dotenv.config({
-  path: './.env'
-})
 
 
 const socket = io("http://localhost:5000");
@@ -21,12 +15,17 @@ function App() {
       socket.emit("join_room", room); // Emit when room changes
     }
 
-
+    socket.on("load_messages",(msgs)=>{
+      setChat(msgs)
+    })
     socket.on("receive_message", (data) => {
       setChat((prevChat) => [...prevChat, data]);
     });
 
-    return () => socket.off("receive_message");
+    return () =>{
+      socket.off("load_message");
+      socket.off("receive_message");
+    }
   }, [room]);
 
   const sendMessage = (e) => {
