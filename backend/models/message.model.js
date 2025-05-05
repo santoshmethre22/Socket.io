@@ -7,4 +7,9 @@ const MessageSchema = new mongoose.Schema({
   time: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Message', MessageSchema);
+
+
+//module.exports = mongoose.model('Message', MessageSchema);
+const Message=mongoose.model("Message",MessageSchema)
+
+export default Message;

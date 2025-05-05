@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import dotenv from "dotenv"
+
+
+dotenv.config({
+  path: './.env'
+})
+
 
 const socket = io("http://localhost:5000");
 
